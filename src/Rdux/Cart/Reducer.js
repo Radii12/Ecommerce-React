@@ -33,16 +33,7 @@ export const ProductCart = (state = INITIAL_STATE, action) => {
                 cart: updatedCart
             };
 
-        case "UPDATE_QUANTITY":
-            const { productId: updatedProductId, quantity } = action.payload;
-            return {
-                ...state,
-                cart: {
-                    ...state.cart,
-                    [updatedProductId]: quantity
-                }
-            };
-
+       
         default:
             return state;
     }

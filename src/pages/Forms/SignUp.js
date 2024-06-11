@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import MyTitle from "../MyTitle";
 
 function SignUP() {
   const [showPassword, setShowPassword] = useState(false);
-
+  var x = [1];
+  const [users, setUsers] = useState([]);
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
@@ -13,6 +15,7 @@ function SignUP() {
     password: "",
     confirmPassword: "",
   });
+
   const [userError, setUserError] = useState({
     errorName: "",
     emailErrors: "",
@@ -25,7 +28,12 @@ function SignUP() {
   ////////////////////////////////////////////////////////////////////////
 
   const changeData = (e) => {
-    if (e.target.name == "username") {
+    const { name, value } = e.target;
+    setData((prevUserData) => ({
+      ...prevUserData,
+      [name]: value,
+    }));
+    if (e.target.name === "username") {
       setData({
         ...userData,
         name: e.target.value,
@@ -35,7 +43,7 @@ function SignUP() {
         errorName: e.target.value.length === 0 && "this filed is required",
       });
     }
-    if (e.target.name == "userName") {
+    if (e.target.name === "userName") {
       setData({
         ...userData,
         userName: e.target.value,
@@ -53,7 +61,7 @@ function SignUP() {
     //////////////////////////////////////////////////////////
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
-    if (e.target.name == "email") {
+    if (e.target.name === "email") {
       setData({
         ...userData,
         Email: e.target.value,
@@ -61,7 +69,7 @@ function SignUP() {
       setUserError({
         ...userError,
         emailErrors:
-          e.target.value.length == 0
+          e.target.value.length === 0
             ? "this field is required"
             : reg.test(e.target.value) == false && "enter valid email",
       });
@@ -76,7 +84,7 @@ function SignUP() {
       setUserError({
         ...userData,
         passwordError:
-          e.target.value.length == 0
+          e.target.value.length === 0
             ? "this field is required"
             : e.target.value.length < 8
             ? "the password must be more than 8 char"
@@ -85,7 +93,7 @@ function SignUP() {
       });
     }
     ////////////////////////////////////////
-    if (e.target.name == "confirmPassword") {
+    if (e.target.name === "confirmPassword") {
       setData({
         ...userData,
         confirmPassword: e.target.value,
@@ -93,33 +101,40 @@ function SignUP() {
       setUserError({
         ...userData,
         confirmError:
-          e.target.value.length == 0
+          e.target.value.length === 0
             ? "this field is required"
-            : e.target.value != userData.password &&
+            : e.target.value !== userData.password &&
               " the confirmation password must be mached to the password",
       });
     }
 
     setHasError(
-        !!(
-          userError.errorName ||
-          userError.emailErrors ||
-          userError.userNameError ||
-          userError.passwordError ||
-          userError.confirmError
-        )
-      );
-  
+      !!(
+        userError.errorName ||
+        userError.emailErrors ||
+        userError.userNameError ||
+        userError.passwordError ||
+        userError.confirmError
+      )
+    );
   };
-  const handleSubmit=(e)=>{
+  const [items, setItems] = useState([""]);
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem('key',JSON.stringify(userData))
-  }
-  
+
+    console.log(userData);
+    const updatedItems = [...items, userData];
+
+    setItems(updatedItems);
+
+    localStorage.setItem("user", JSON.stringify(updatedItems));
+  };
+
   return (
     <div className="container">
-      <h2>Registration Form</h2>
-      <form onSubmit={(e)=>handleSubmit()}>
+      <MyTitle test="Sign up" />
+      <form onSubmit={(e) => handleSubmit(e)}>
         <div className="form-group">
           <label htmlFor="username">Username:</label>
           <input
@@ -195,7 +210,7 @@ function SignUP() {
         </div>
         <p className="text-danger">{userError.confirmError}</p>
 
-        <button   type="submit" className="btn btn-primary">
+        <button to="/" type="submit" className="btn btn-primary">
           Submit
         </button>
       </form>

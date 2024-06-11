@@ -1,8 +1,9 @@
 import React, { useState } from "react";
+import MyTitle from "../MyTitle";
 
-function Login (){
-        let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-       
+function Login() {
+  let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
   const [userData, setUserData] = useState({
     Password: "",
     Email: "",
@@ -10,24 +11,21 @@ function Login (){
   const [errors, setErrors] = useState({
     emailErrors: "",
     passwordError: "",
-    emailValid:true
+    emailValid: true,
   });
   const changeData = (e) => {
     if (e.target.name == "Email") {
       setUserData({
-        
         ...userData,
         Email: e.target.value,
       });
 
       setErrors({
         ...errors,
-        emailErrors: e.target.value.length == 0
-         ? "this field is required"
-        
-        :reg.test(e.target.value)==false &&"enter valid email"
-        
-        
+        emailErrors:
+          e.target.value.length == 0
+            ? "this field is required"
+            : reg.test(e.target.value) == false && "enter valid email",
       });
     }
     if (e.target.name == "Password") {
@@ -37,13 +35,18 @@ function Login (){
       });
       setErrors({
         ...errors,
-        passwordError: e.target.value.length == 0 ? "this field is required" : e.target.value.length < 8 && "the password should be at least 8 characters"
-
+        passwordError:
+          e.target.value.length == 0
+            ? "this field is required"
+            : e.target.value.length < 8 &&
+              "the password should be at least 8 characters",
       });
     }
   };
   return (
     <>
+      <MyTitle test="Login" />
+
       <div className=" d-flex vh-100 justify-content-center  align-content-center flex-wrap">
         <form className="col-6 form-group">
           <div className="mb-3">
@@ -55,7 +58,9 @@ function Login (){
               value={userData.Email}
               name="Email"
               onChange={(e) => changeData(e)}
-              className={`form-control ${errors.emailErrors && "border-danger"}`}
+              className={`form-control ${
+                errors.emailErrors && "border-danger"
+              }`}
               id="exampleInputEmail1"
               aria-describedby="emailHelp"
             />
@@ -86,7 +91,11 @@ function Login (){
               Check me out
             </label>
           </div>
-          <button disabled={errors.emailErrors||errors.passwordError} type="submit" className="btn btn-primary  ">
+          <button
+            disabled={errors.emailErrors || errors.passwordError}
+            type="submit"
+            className="btn btn-primary  "
+          >
             Submit
           </button>
         </form>

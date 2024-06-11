@@ -10,7 +10,7 @@ function ProductDetails() {
   const { id } = useParams();
   console.log(id);
 
-  const [product, setProduct] = useState({}); // Initialize product with an empty object
+  const [product, setProduct] = useState({}); 
   useEffect(() => {
     axios
       .get(`https://dummyjson.com/products/${id}`)
